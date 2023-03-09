@@ -74,16 +74,31 @@ WSGI_APPLICATION = 'wenge_V2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'wenge_v2',  # 数据库名字
-        'USER': 'root',
-        'PASSWORD': '123',
-        'HOST': '127.0.0.1',  # 那台机器安装了MySQL
-        'PORT': 3306,
+import sys
+if sys.platform == 'linux':
+    # Linux
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'wenge_v2',  # 数据库名字
+            'USER': 'root',
+            'PASSWORD': '123',
+            'HOST': '172.17.0.4',  # 那台机器安装了MySQL
+            'PORT': 3306,
+        }
     }
-}
+elif sys.platform == 'darwin':
+    # mac os
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'wenge_v2',  # 数据库名字
+            'USER': 'root',
+            'PASSWORD': '123',
+            'HOST': '127.0.0.1',  # 那台机器安装了MySQL
+            'PORT': 3306,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
