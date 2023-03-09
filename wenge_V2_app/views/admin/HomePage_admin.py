@@ -75,7 +75,7 @@ def HomePage_Admin(request):
         # 1. 直接查找最近一次上传的tag,并根据这个tag查找数据库,返回前端渲染
         
         data = account.objects.all().order_by('-createdTime').first() # 获取最新的一条数据,里面的 tag ,tag是标签,是文件名
-        if latest_accounts_data != None:
+        if data != None:
             tag = data.tag
             message = '最新上传表格为:'+str(tag)+',内容如下:'
         else:
