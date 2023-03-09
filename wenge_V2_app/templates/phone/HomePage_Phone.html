@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>welcome</title>
+    <style>
+        .message-container {
+            display: flex;
+        }
+        
+        .message-container p {
+            margin-right: 20px;
+        }
+        /* 输入框和按钮 */
+        
+        .form-control,
+        .btn-copy {
+            height: 60px;
+            line-height: 60px;
+        }
+        /* table */
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        thead {
+            background-color: #eee;
+            font-weight: bold;
+        }
+        
+        th,
+        td {
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    welcome to phone page
+    <div>
+        {{message}}
+    </div>
+    <div>
+        <H1>本手机是:{{phone_data.phoneId}}</H1>
+        <H1>归属文档:{{tiktok_accounts_data.tag}}</H1>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-sm-8 form-group">
+            <div class="input-group">
+                <input type="text" id="copy-username" class="form-control" value="{{ tiktok_accounts_data.username }}">
+                <div class="input-group-btn" style="display: inline-block;">
+                    <button class="btn btn-primary btn-copy" data-copytarget="#copy-username">点击获取:tiktok账号</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8 form-group">
+            <div class="input-group">
+                <input type="text" id="copy-password" class="form-control" value="{{ tiktok_accounts_data.password }}">
+                <div class="input-group-btn" style="display: inline-block;">
+                    <button class="btn btn-primary btn-copy" data-copytarget="#copy-password">点击获取:tiktok密码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if tiktok_accounts_data.extraEmail %}
+    <div class="row">
+        <div class="col-sm-8 form-group">
+            <div class="input-group">
+                <input type="text" id="copy-email" class="form-control" value="{{ tiktok_accounts_data.extraEmail }}">
+                <div class="input-group-btn" style="display: inline-block;">
+                    <button class="btn btn-primary btn-copy" data-copytarget="#copy-email">点击获取:email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Toktok ID</th>
+                <th>phoneName</th>
+                <th>最后打开页面时间</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>{{ tiktok_accounts_data.id }}</td>
+                <td>{{ phone_data.phoneName }}</td>
+                <td>{{ phone_data.lastLoginTime }}</td>
+
+            </tr>
+
+        </tbody>
+    </table>
+    <div>
+        <div>
+
+            <a href="remove_binding/?removeAccount=yes">点击让手机解除绑定tiktok号 账号不再使用 (被封号)</a>
+        </div>
+        <div>
+
+            <a href="remove_binding/?removeAccount=no">点击让手机解除绑定tiktok号 账号回归账号池</a>
+        </div>
+
+    </div>
+
+    <script>
+        (function name(params) {
+            'use strict';
+
+            //添加点击事件
+            document.body.addEventListener('click', copy, true);
+
+            //copy事件
+            function copy(e) {
+                //找到要复制的区域
+                var
+                    t = e.target,
+                    c = t.dataset.copytarget,
+                    inp = (c ? document.querySelector(c) : null);
+                //要复制的区域是否可以选中
+                if (inp && inp.select) {
+                    //选中
+                    inp.select();
+
+                    try {
+                        //执行复制
+                        document.execCommand('copy');
+                    } catch (error) {
+                        alert('请使用Ctrl+c进行复制');
+                    }
+                }
+            }
+        })();
+    </script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %} "></script>
+    <script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.min.js' %} "></script>
+
+</body>
+
+
+</html>

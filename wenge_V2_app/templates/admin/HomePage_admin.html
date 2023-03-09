@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div style="text-align:center;">
+        <h1 style="font-size: 48px; font-weight: bold; color: #333; text-shadow: 2px 2px 4px #aaa;">admin 首页</h1>
+    </div>
+
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input style="display:none;" type="text" value="upload" name="action">
+            <div>账号文档提交 ,请点击左下 Choose File,然后选择文档</div>
+            <input type="file" name="avatar">
+            <input type="submit" value="提交确认">
+        </form>
+    </div>
+
+    <h1>{{message}}</h1>
+
+    {% if latest_accounts_data %}
+    <!-- 在my_template.html模板中使用table标签来展示数据 -->
+    <table>
+        <thead>
+            <tr>
+                <th>Tiktok ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>ExtraEmail</th>
+                <th>Status</th>
+                <th>Tag</th>
+                <th>usedByPhone</th>
+                <th>Created Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in latest_accounts_data %}
+            <tr>
+                <td>{{item.id}}</td>
+                <td>{{ item.username }}</td>
+                <td>{{ item.password }}</td>
+                <td>{{ item.extraEmail }}</td>
+                <td>
+                    {% if i.status == 0 %} 未激活 {% elif i.status == 1 %} 已激活 {% endif %}
+                </td>
+                <td>{{ item.tag }}</td>
+                <td>{{ item.usedByPhone }}</td>
+                <td>{{ item.createdTime }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %} {% if upload_data.data.sucess %}
+    <h2>本次成功上传数据如下:</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="col-sm-2">排序</th>
+                <th class="col-sm-2">邮箱</th>
+                <th class="col-sm-2">密码</th>
+                <th class="col-sm-2">归属文档</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in upload_data.data.sucess.items %}
+            <tr>
+                <td>{{ key }}</th>
+                    <td>{{ value.username }}</th>
+                        <td>{{ value.password }}</th>
+                            <td>{{ upload_data.tag }}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %} {% if upload_data.data.fail %}
+    <h2>本次失败上传数据如下:</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="col-sm-2">排序</th>
+                <th class="col-sm-2">邮箱</th>
+                <th class="col-sm-2">密码</th>
+                <th class="col-sm-2">归属文档</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in upload_data.data.fail.items %}
+            <tr>
+                <td>{{ key }}</th>
+                    <td>{{ value.username }}</th>
+                        <td>{{ value.password }}</th>
+                            <td>{{ upload_data.tag }}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</body>
+
+</html>
