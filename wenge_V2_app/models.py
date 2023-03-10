@@ -8,9 +8,10 @@ class account(models.Model):
     username = models.CharField(max_length=50) # 用户名
     password = models.CharField(max_length=50) # 密码
     status_choices = (
-        # status 二选一 , 0 为未激活, 1 为已激活
+        # status 二选一 , 0 为未激活, 1 为已激活, 2 为已封禁
         (0, "未使用"),
         (1, "已使用"),
+        (2, "已封禁")
     ) # 是否被使用
     status = models.IntegerField(choices=status_choices,default=0)
     tag = models.CharField(max_length=50) # 每一份上传docx文件,用文件名做tag

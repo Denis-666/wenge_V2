@@ -20,11 +20,11 @@ def remove_binding(request):
     remove_account = request.GET.get('removeAccount')
     # 如果 removeAccount 参数存在并且值为 "yes"
     if remove_account == 'yes':
-        # 被封号了
-        pass
+        models.account.objects.filter(id=tiktokId).update(status=2) # status=2 ,已封禁
+        models.account.objects.filter(id=tiktokId).update(usedByPhone='None')
     elif remove_account == 'no':
         # 没封号,回归账号池
-        models.account.objects.filter(id=tiktokId).update(status=0)
+        models.account.objects.filter(id=tiktokId).update(status=0) # status=0 ,未使用
         models.account.objects.filter(id=tiktokId).update(usedByPhone='None')
 
 

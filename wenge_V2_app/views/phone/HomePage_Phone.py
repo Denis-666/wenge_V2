@@ -95,7 +95,7 @@ def HomePage_Phone(request):
         else:
             message = '获取账号成功'
 
-        response = HttpResponse(render(request, HomePage_Phone_path, {'message':message,'phone_data':phone_data,'tiktok_accounts_data':tiktok_accounts_data}))
+        response = HttpResponse(render(request, HomePage_Phone_path, {'message':message,'lastLoginTime':lastLoginTime,'phone_data':phone_data,'tiktok_accounts_data':tiktok_accounts_data}))
         response.set_cookie('lastLoginTime', lastLoginTime, max_age=365 * 24 * 60 * 60)
         response.set_cookie('phoneId', phoneId, max_age=365 * 24 * 60 * 60)
         return response
@@ -119,9 +119,10 @@ def cookie_processing(request):
         lastLoginTime = request.COOKIES.get('lastLoginTime')
         print('phoneId',phoneId)
         # 1.2.2 更新 lastLoginTime
-        print('lastLoginTime',lastLoginTime)
-        lastLoginTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        models.phone.objects.filter(phoneId=phoneId).update(lastLoginTime=lastLoginTime)
+        currentLoginTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        lastLoginTime = models.phone.objects.filter(phoneId=phoneId).first().lastLoginTime # 读取上一次 lastLoginTime
+        print('lastLoginTime:',lastLoginTime,',currentLoginTime:',currentLoginTime)
+        models.phone.objects.filter(phoneId=phoneId).update(lastLoginTime=currentLoginTime) # 更新本次 lastLoginTime
 
     return phoneId,lastLoginTime
 

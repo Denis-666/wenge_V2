@@ -21,12 +21,25 @@
         }
         
         th {
-            background-color: #4CAF50;
+            background-color: hsl(161, 49%, 35%);
             color: white;
         }
         
         tr:hover {
             background-color: #f5f5f5;
+        }
+        /* 账号状态颜色 */
+        
+        #unused {
+            color: green;
+        }
+        
+        #used {
+            color: gold;
+        }
+        
+        #banned {
+            color: red;
         }
     </style>
 
@@ -56,13 +69,13 @@
         <thead>
             <tr>
                 <th>Tiktok ID</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>ExtraEmail</th>
+                <th>账号</th>
+                <th>密码</th>
+                <th>辅助邮箱</th>
                 <th>Status</th>
-                <th>Tag</th>
-                <th>usedByPhone</th>
-                <th>Created Time</th>
+                <th>归属文档</th>
+                <th>绑定手机</th>
+                <th>tiktok号导入时间</th>
             </tr>
         </thead>
         <tbody>
@@ -72,9 +85,13 @@
                 <td>{{ item.username }}</td>
                 <td>{{ item.password }}</td>
                 <td>{{ item.extraEmail }}</td>
-                <td>
-                    {% if i.status == 0 %} 未激活 {% elif i.status == 1 %} 已激活 {% endif %}
-                </td>
+                {% if item.status == 0 %}
+                <td id="unused">未使用</td>
+                {% elif item.status == 1 %}
+                <td id="used">已使用</td>
+                {% elif item.status == 2 %}
+                <td id="banned">已封号</td>
+                {% endif %}
                 <td>{{ item.tag }}</td>
                 <td>{{ item.usedByPhone }}</td>
                 <td>{{ item.createdTime }}</td>
